@@ -7,11 +7,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import whoscared.library.dao.BookDAO;
 import whoscared.library.dao.PersonDAO;
-import whoscared.library.models.Book;
 import whoscared.library.models.Person;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/people")
@@ -58,10 +56,10 @@ public class PeopleController {
     //Теперь на этапе внедрения значений из формы в объект, поля будут проверяться согласно условиям, которые мы
     //прописали для каждого из них. Если не все будут выполнены, вызывается ошибка
     //Ошибки помещаются в отдельный объект BindingResult (он всегда должен идти после той модели, которая валидируется)
-    public String create(//Model model,
-                         @ModelAttribute("person") @Valid Person person,
-                         //@ModelAttribute("chooseBooks") List<Book> chooseBooks,
-                         BindingResult bindingResult) {
+    public String addPerson(//Model model,
+                            @ModelAttribute("person") @Valid Person person,
+                            //@ModelAttribute("chooseBooks") List<Book> chooseBooks,
+                            BindingResult bindingResult) {
         //Если имеются ошибки
         if (bindingResult.hasErrors()) {
             //Сразу же возвращаем форму создания человека, если были допущены ошибки
@@ -69,7 +67,7 @@ public class PeopleController {
             return "person/new";
         }
         //model.addAttribute("books", bookDAO.freeBook());
-        personDAO.save(person);
+        personDAO.addPerson(person);
         //bookDAO.userGetBooks(person.getId(), chooseBooks);
         return "redirect:/people";
     }
@@ -86,7 +84,16 @@ public class PeopleController {
         return ("person/edit");
     }
 
-    //@PostMapping
+    @PostMapping("/{id}")
+    public String change(@PathVariable("id") int id,
+                         @ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return ("/person/edit");
+        }
+        personDAO.edit(person, id);
+        return ("person/id");
+    }
 
     // На странице конкретного человека будет кнопка удалить, из url получаем id и удаляем
     @DeleteMapping("/{id}")

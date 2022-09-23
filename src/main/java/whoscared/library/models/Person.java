@@ -15,12 +15,12 @@ public class Person {
                     "Senatorova Sofya Stanislavovna")
     private String fullName;
     @Min(value = 1900, message = "Year of birth should not < 1900")
-    private int yearOfBirth;
+    private int year;
 
     public Person(int id, String fullName, int yearOfBirth) {
         this.id = id;
         this.fullName = fullName;
-        this.yearOfBirth = yearOfBirth;
+        this.year = yearOfBirth;
     }
 
     //Объект, созданный с помощью пустого конструктора, передается в модель для страницы с формой создания нового пользователя
@@ -33,18 +33,20 @@ public class Person {
     public String getFullName() {
         return fullName;
     }
-    public int getYearOfBirth() {
-        return yearOfBirth;
+    public int getYear() {
+        return year;
     }
     public int getAge() {
-        return Calendar.YEAR - this.yearOfBirth;
+        return (2022 - this.year);
     }
-
+    public void setId(int id) {
+        this.id = id;
+    }
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-    public void setYearOfBirth(int yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
+    public void setYear(int year) {
+        this.year = year;
     }
 
 }

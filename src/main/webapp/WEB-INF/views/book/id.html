@@ -5,10 +5,10 @@
     <title>Book page</title>
 </head>
 <body>
-<p th:text="Name: ${book.getName()}">Name</p>
-<p th:text="Author: ${book.getAuthor()}">Author</p>
-<p th:text="Year: ${book.getYear()}">Year</p>
+<p th:text="${'Name: ' + book.getName()}">Name</p>
+<p th:text="${'Author: ' + book.getAuthor()}">Author</p>
+<p th:text="${'Year: ' + book.getYear()}">Year</p>
 
-<p th:if="" th:text="Library user: ${person.getFullName()}">User</p>
+<p th:if="${person}!=null" th:text="Library user: ${person.getFullName()}">User</p>
 </body>
 </html>
