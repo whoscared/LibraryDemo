@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+</head>
+<body>
+<p th:text="Full Name: ${person.getFullName()}">FullName</p>
+<p th:text="Age: ${person.getAge()}">Age</p>
+<!--Используем форму, так как отправляем запрос при нажатии на элемент списка, а именно переход на страницу книги
+ по ее id (указываем метод и действие)-->
+<form th:method="GET" th:action="@{book/{idBook}}">
+    <!--Название для списка, которое присваиваем по id для списка-->
+    <label for="book">Список книг</label>
+    <!--Object это то, из чего состоит наш список, object должны также передавать с помощью model -->
+    <!--Field это то поле, которое мы будем выбирать в нашем списке, которое будет лежать в аттрибуте Value-->
+    <select th:object="${books}" th:filed="*{idBook}" id="book">
+        <!--Обход по списку книг благодаря each-->
+        <!--Отправляем на сервер Value, которое получаем у каждого объекта-->
+        <option th:each="book : ${books}" th:value="${book.getIdBook()}"
+                th:text="${book.getName()}">
+            <!--Текст, который будет в нашем списке-->
+        </option>
+    </select>
+</form>
+</body>
+</html>
