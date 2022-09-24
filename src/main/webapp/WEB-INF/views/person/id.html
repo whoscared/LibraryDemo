@@ -8,6 +8,11 @@
 <p th:text="${'Full Name: ' + person.getFullName()}">FullName</p>
 <p th:text="${'Age: ' +  person.getAge()}">Age</p>
 
-<!-- TODO: добавить список книг -->
+<p th:if="${books.isEmpty()}">The user has no books</p>
+<p th:if="${!(books.isEmpty())}" style="color:darkslategrey"
+   th:text="${'List of ' + person.getFullName + ' books'}"></p>
+<div th:each="book : ${books}">
+    <a th:href="@{/book/{id}(id=${book.getId()})}" th:text="${book.getName()}"></a>
+</div>
 </body>
 </html>

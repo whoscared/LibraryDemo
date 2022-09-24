@@ -3,7 +3,6 @@ package whoscared.library.models;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.Calendar;
 
 public class Person {
     private int id;

@@ -14,23 +14,23 @@
 
 <!--Используем форму, так как отправляем запрос при нажатии на элемент списка, а именно
 назначение владельца книги (указываем метод и действие)-->
-<form th:if="${user}==null" th:method="POST" th:action="@{/book/{id}(id=${book.getId()})}">
+<form th:if="${user}==null" th:method="POST" th:action="@{/book/addUser}">
     <!--Название для списка, которое присваиваем по id для списка-->
     <!--Условие, которые проверяет, есть ли пользователи библиотеки-->
     <label th:if="${!(people.isEmpty())}" for="people">Users list</label>
     <!--Object это то, из чего состоит наш список, object должны также передавать с помощью model -->
     <!--В данном случае, в object передали пустой объект класса Person-->
     <!--Field это то поле, которое мы будем выбирать в нашем списке, которое будет лежать в аттрибуте Value-->
-    <select th:if="${!(people.isEmpty())}" th:object="${person}" th:filed="*{id}" id="people">
+    <select th:if="${!(people.isEmpty())}" th:object="${bookOwner}" th:filed="*{person}" id="people">
         <!--Обход по списку книг благодаря each-->
         <!--Отправляем на сервер Value, которое получаем у каждого объекта-->
-        <option th:if="${!(people.isEmpty())}" th:each="person : ${people}" th:value="${person.getId()}"
+        <option th:if="${!(people.isEmpty())}" th:each="person : ${people}" th:value="${person}"
                 th:text="${person.getFullName()}">
             <!--Текст, который будет в нашем списке-->
         </option>
     </select>
     <!--Кнопка выбора-->
-    <input th:if="${!(people.isEmpty())}" type="submit" value="Choose user"/>
+    <input type="submit" value="Choose user"/>
 </form>
 
 </body>

@@ -66,6 +66,7 @@ public class PeopleController {
             //Возвращаем с текущей моделью, в которой допущены ошибки
             return "person/new";
         }
+        //model.addAttribute()
         //model.addAttribute("books", bookDAO.freeBook());
         personDAO.addPerson(person);
         //bookDAO.userGetBooks(person.getId(), chooseBooks);

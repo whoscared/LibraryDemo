@@ -23,7 +23,7 @@ public class PersonDAO {
     public List<Person> allPerson() {
         // В jdbc сначала отправляем SQL-запрос затем BeanPropertyRowMapper
         //BeanPropertyRowMapper преобразует объект, который отображает бд, в требуемую сущность
-        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
+        return jdbcTemplate.query("SELECT * FROM Person", new PersonMapper());
     }
 
     public Person onePerson(int id) {
@@ -31,9 +31,10 @@ public class PersonDAO {
         // Данные передаем с помощью массива объектов (аналогично, если объект один)
         // query возвращает List<Optional>, поэтому находим нужное значение с помщью stream()
         return jdbcTemplate.query("SELECT * FROM Person WHERE id_person = ?", new Object[]{id},
-                        new BeanPropertyRowMapper<>(Person.class))
+                        new PersonMapper())
                 .stream()
-                .findAny().orElse(null); //Возвращает не объект класса, а Optional
+                .findAny()
+                .orElse(null);
     }
 
     // В методах update мы ничего не возвращаем из БД, поэтому нам не нужен BeanPropertyRowMapper

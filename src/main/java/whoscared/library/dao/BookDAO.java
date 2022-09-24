@@ -1,7 +1,6 @@
 package whoscared.library.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import whoscared.library.models.Book;
@@ -51,11 +50,9 @@ public class BookDAO {
                 new BookMapper());
     }
 
-    public void userGetBooks(int id, List<Book> books) {
-        for (Book book : books) {
-            jdbcTemplate.update("UPDATE Book SET id_person=? WHERE id_book=?",
+    public void userGetBook(int id, Book book) {
+        jdbcTemplate.update("UPDATE Book SET id_person=? WHERE id_book=?",
                     id, book.getId());
-        }
     }
 
     public void addBook(Book book) {
