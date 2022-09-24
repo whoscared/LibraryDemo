@@ -30,7 +30,7 @@ public class PersonDAO {
         // В SQL-запросе вместо данных, которые будем передавать ставим знак вопроса
         // Данные передаем с помощью массива объектов (аналогично, если объект один)
         // query возвращает List<Optional>, поэтому находим нужное значение с помщью stream()
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id = ?", new Object[]{id},
+        return jdbcTemplate.query("SELECT * FROM Person WHERE id_person = ?", new Object[]{id},
                         new BeanPropertyRowMapper<>(Person.class))
                 .stream()
                 .findAny().orElse(null); //Возвращает не объект класса, а Optional
@@ -38,7 +38,7 @@ public class PersonDAO {
 
     // В методах update мы ничего не возвращаем из БД, поэтому нам не нужен BeanPropertyRowMapper
     public void deletePerson(int id) {
-        jdbcTemplate.update("DELETE FROM Person WHERE id = ?", id);
+        jdbcTemplate.update("DELETE FROM Person WHERE id_person = ?", id);
     }
 
     // id получаем из url-адреса страницы, данные для объекта класса Person заполняем из формы

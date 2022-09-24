@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import whoscared.library.models.Book;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class BookDAO {
@@ -18,48 +17,51 @@ public class BookDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Book oneBook(int idBook){
+    public Book oneBook(int idBook) {
         return jdbcTemplate.query("SELECT * FROM Book WHERE id_book=?", new Object[]{idBook},
-                new BeanPropertyRowMapper<>(Book.class))
+                        new BookMapper())
                 .stream()
                 .findAny()
                 .orElse(null);
     }
 
-    public int getIdPerson(int idBook){
+    public int getIdPerson(int idBook) {
         Book book = jdbcTemplate.query("SELECT * FROM Book WHERE id_book=?", new Object[]{idBook},
-                new BeanPropertyRowMapper<>(Book.class))
+                        new BookMapper())
                 .stream()
                 .findAny()
                 .orElse(null);
-        if (book != null){
-            return book.getPerson_id();
+        if (book != null) {
+            return book.getIdPerson();
         }
         return -1;
     }
 
-    public List<Book> allBook(){
-        return jdbcTemplate.query("SELECT * FROM Book", new BeanPropertyRowMapper<>(Book.class));
+    public List<Book> allBook() {
+        return jdbcTemplate.query("SELECT * FROM Book", new BookMapper());
     }
 
-    public List<Book> personBook(int id){
+    public List<Book> personBook(int id) {
         return jdbcTemplate.query("SELECT * FROM Book WHERE id_person = ?", new Object[]{id},
-                new BeanPropertyRowMapper<>(Book.class));
+                new BookMapper());
     }
 
-    public List<Book> freeBook(){
+    public List<Book> freeBook() {
         return jdbcTemplate.query("SELECT * FROM Book WHERE id_person = null",
-                new BeanPropertyRowMapper<>(Book.class));
+                new BookMapper());
     }
 
-    public void userGetBooks(int id, List<Book> books){
+    public void userGetBooks(int id, List<Book> books) {
         for (Book book : books) {
-            jdbcTemplate.update("UPDATE Book SET id_person=? WHERE id_book=?",id, book.getIdBook());
+            jdbcTemplate.update("UPDATE Book SET id_person=? WHERE id_book=?",
+                    id, book.getId());
         }
     }
 
-    public void addBook(Book book){
-        jdbcTemplate.update("INSERT INTO Book(id_book,name,author,year) VALUES (?,?,?,?)",
-                book.getIdBook(), book.getName(), book.getAuthor(), book.getYear());
+    public void addBook(Book book) {
+        jdbcTemplate.update("INSERT INTO Book(name,author,year) VALUES (?,?,?)",
+                book.getName(), book.getAuthor(), book.getYear());
     }
+
+
 }

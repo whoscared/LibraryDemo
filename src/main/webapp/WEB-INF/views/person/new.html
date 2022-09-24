@@ -16,9 +16,9 @@
     <!--Если выполняется условие if, текстовое окно показывается, иначе - нет-->
     <div style="color:gray" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">error fullName</div>
     <br/>
-    <label for="yearOfBirth">Year of birth</label>
-    <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth"/>
-    <div style="color:gray" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">error year</div>
+    <label for="year">Year of birth</label>
+    <input type="text" th:field="*{year}" id="year"/>
+    <div style="color:gray" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">error year</div>
     <br/>
     <input type="submit" value="Create!"/>
 
