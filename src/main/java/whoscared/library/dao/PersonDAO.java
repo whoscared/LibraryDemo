@@ -52,4 +52,12 @@ public class PersonDAO {
         jdbcTemplate.update("INSERT INTO Person(fullname, year) VALUES (?,?)",
                 person.getFullName(), person.getYear());
     }
+
+    public Person owner(int idBook){
+        return jdbcTemplate.query("SELECT Person * FROM Book JOIN Person ON Book.id_person = Person.id_person" +
+                "WHERE Book.id_book = ?", new Object[]{idBook}, new PersonMapper())
+                .stream()
+                .findAny()
+                .orElse(null);
+    }
 }

@@ -12,7 +12,7 @@
 <div th:each="person : ${people}">
     <!--Для каждого объекта будет ссылка, чтобы мы могли перейти на страницу конкретного пользователя -->
     <!--Получаем id каждого человека и кладем его во временную переменную, которую передаем для ссылки -->
-    <a th:href="@{/people/{id}(id=${person.getId_person()})}" th:text="${person.getFullName()}"></a>
+    <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getFullName()}"></a>
 </div>
 
 <a style="color: black" href="/people/new">Add new library user</a>
