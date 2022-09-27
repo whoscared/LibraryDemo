@@ -35,6 +35,7 @@ public class Person {
     public int getYear() {
         return year;
     }
+    //Возраст используется для страницы пользователя
     public int getAge() {
         return (2022 - this.year);
     }

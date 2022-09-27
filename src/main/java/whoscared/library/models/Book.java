@@ -7,9 +7,7 @@ import javax.validation.constraints.Size;
 
 public class Book {
     private int id;
-
     private int idPerson;
-
     @NotEmpty(message = "Name of book should not be empty!")
     @Size(min = 1, max = 30)
     private String name;
@@ -20,6 +18,7 @@ public class Book {
     private String author;
     @Min(value = 1000, message = "Year should not be < 1000")
     private int year;
+
     public Book(int id, String name, String author, int year) {
         this.id = id;
         this.name = name;
@@ -31,6 +30,9 @@ public class Book {
     public int getId() {
         return id;
     }
+    public int getIdPerson() {
+        return idPerson;
+    }
     public String getName() {
         return name;
     }
@@ -39,9 +41,6 @@ public class Book {
     }
     public int getYear() {
         return year;
-    }
-    public int getIdPerson() {
-        return idPerson;
     }
     public void setId(int id) {
         this.id = id;

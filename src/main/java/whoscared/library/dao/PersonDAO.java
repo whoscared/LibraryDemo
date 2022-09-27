@@ -11,15 +11,11 @@ import java.util.List;
 @Component
 public class PersonDAO {
     private final JdbcTemplate jdbcTemplate;
-
     @Autowired
     public PersonDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public boolean haveAny(){
-        return allPerson() != null;
-    }
     public List<Person> allPerson() {
         // В jdbc сначала отправляем SQL-запрос затем BeanPropertyRowMapper
         //BeanPropertyRowMapper преобразует объект, который отображает бд, в требуемую сущность
@@ -37,9 +33,9 @@ public class PersonDAO {
                 .orElse(null);
     }
 
-    // В методах update мы ничего не возвращаем из БД, поэтому нам не нужен BeanPropertyRowMapper
-    public void deletePerson(int id) {
-        jdbcTemplate.update("DELETE FROM Person WHERE id_person = ?", id);
+    public void addPerson(Person person) {
+        jdbcTemplate.update("INSERT INTO Person(fullname, year) VALUES (?,?)",
+                person.getFullName(), person.getYear());
     }
 
     // id получаем из url-адреса страницы, данные для объекта класса Person заполняем из формы
@@ -48,16 +44,9 @@ public class PersonDAO {
                 person.getFullName(), person.getYear(), id);
     }
 
-    public void addPerson(Person person) {
-        jdbcTemplate.update("INSERT INTO Person(fullname, year) VALUES (?,?)",
-                person.getFullName(), person.getYear());
+    // В методах update мы ничего не возвращаем из БД, поэтому нам не нужен BeanPropertyRowMapper
+    public void deletePerson(int id) {
+        jdbcTemplate.update("DELETE FROM Person WHERE id_person = ?", id);
     }
 
-    public Person owner(int idBook){
-        return jdbcTemplate.query("SELECT Person * FROM Book JOIN Person ON Book.id_person = Person.id_person" +
-                "WHERE Book.id_book = ?", new Object[]{idBook}, new PersonMapper())
-                .stream()
-                .findAny()
-                .orElse(null);
-    }
 }

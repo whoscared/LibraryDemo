@@ -17,19 +17,20 @@ import javax.validation.Valid;
 public class BookController {
     private final BookDAO bookDAO;
     private final PersonDAO personDAO;
-
     @Autowired
     public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
         this.personDAO = personDAO;
     }
 
+    //Страница со списком всех книг, передаем model,которая содержит этот список
     @GetMapping()
     public String allBooks(Model model) {
         model.addAttribute("books", bookDAO.allBook());
         return ("/book/list");
     }
 
+    //Страница для каждой книги, с помощью PathVariable получаем id, отправляем model соответствующей книги
     @GetMapping("/{id}")
     public String oneBook(@PathVariable("id") int id,
                           Model model,
@@ -48,43 +49,14 @@ public class BookController {
         return "/book/id";
     }
 
-    @PatchMapping("/{id}/addowner")
-    public String addOwner(@PathVariable("id") int idBook,
-                           @ModelAttribute("person") Person newOwner){
-        Book book = bookDAO.oneBook(idBook);
-        bookDAO.userGetBook(newOwner.getId(), book);
-        return "redirect:/book/" + idBook;
-    }
-
-   /* @PatchMapping("/{id}")
-    // Назначает пустому человеку, которого мы создаем, id, который мы передали через форму
-    public String addUser(@PathVariable("id") int idBook,
-                          @ModelAttribute("person") Person person) {
-        Book book = bookDAO.oneBook(idBook);
-        System.out.println(person.getId());
-        System.out.println(idBook);
-
-        //book.setIdPerson(person.getId());
-        bookDAO.userGetBook(person.getId(), book);
-        return "redirect:/book";
-    }
-
-    @PostMapping("/addUser/{bookId}")
-    public String addNew(@PathVariable("bookId") int idBook,
-                         @ModelAttribute("person") Person person) {
-        Book book = bookDAO.oneBook(idBook);
-        bookDAO.userGetBook(person.getId(), book);
-        return "redirect:/book";
-    }
-
-    */
-
+    //Создание новой книги, передаем пустую model, которую будем заполнять с помощью формы
     @GetMapping("/new")
     public String newBook(Model model) {
         model.addAttribute("book", new Book());
         return "/book/new";
     }
 
+    //Получаем заполненную форму со страницы /new и добавляем книгу в бд
     @PostMapping()
     public String addBook(@ModelAttribute("book") @Valid Book book,
                           BindingResult bindingResult) {
@@ -94,5 +66,30 @@ public class BookController {
         bookDAO.addBook(book);
         return "redirect:/book";
     }
-    //TODO: страницы : удалить книгу, освободить книгу
+
+    //Удаляем книгу, на странице которой находимся, получая id с помощью PathVariable
+    @DeleteMapping("/{id}")
+    public String deleteBook(@PathVariable("id")int id){
+        bookDAO.deleteBook(id);
+        return "redirect:/book";
+    }
+
+    //Освобождаем книгу по ее id
+    @PatchMapping("/{id}/release")
+    public String releaseBook(@PathVariable("id")int id){
+        bookDAO.releaseBook(id);
+        return "redirect:/book/" + id;
+    }
+
+    //Добавляем владельца книги, id которой получаем из страницы, а id пользователя получаем из модели,
+    //которую отправили с формы (выпадающий список, который представляет список пользователей)
+    //при выборе пользователя из списка в пустой объект person с помощью setId помещается id выбранного объекта
+    //пустой объект person, который содержит только id, передается и из него извлекается id для выбор владельца книги
+    @PatchMapping("/{id}/addowner")
+    public String addOwner(@PathVariable("id") int idBook,
+                           @ModelAttribute("person") Person newOwner){
+        Book book = bookDAO.oneBook(idBook);
+        bookDAO.userGetBook(newOwner.getId(), book);
+        return "redirect:/book/" + idBook;
+    }
 }
