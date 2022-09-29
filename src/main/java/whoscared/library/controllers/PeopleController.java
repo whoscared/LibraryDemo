@@ -56,9 +56,7 @@ public class PeopleController {
     //Теперь на этапе внедрения значений из формы в объект, поля будут проверяться согласно условиям, которые мы
     //прописали для каждого из них. Если не все будут выполнены, вызывается ошибка
     //Ошибки помещаются в отдельный объект BindingResult (он всегда должен идти после той модели, которая валидируется)
-    public String addPerson(//Model model,
-                            @ModelAttribute("person") @Valid Person person,
-                            //@ModelAttribute("chooseBooks") List<Book> chooseBooks,
+    public String addPerson(@ModelAttribute("person") @Valid Person person,
                             BindingResult bindingResult) {
         //Если имеются ошибки
         if (bindingResult.hasErrors()) {
